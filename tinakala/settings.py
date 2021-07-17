@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1_0knndysret@=!@5z$p%60o2y-$&aj#x$^%gzjm05e8rth=3n'
+SECRET_KEY = '***'
 
 # KAVENEGAR Api Key
-KAVENEGAR_KEY = '6C5A396574794D3745357331712B7764312F73586C376275704D684F56546B73724C37326F794F397174343D'
+KAVENEGAR_KEY = '***'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -131,8 +131,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'smtp.tinakala@gmail.com'
-EMAIL_HOST_PASSWORD = 'IMan13771221g'
+EMAIL_HOST_USER = '***'
+EMAIL_HOST_PASSWORD = '***'
 
 LANGUAGE_CODE = 'fa-ir'
 
@@ -230,8 +230,8 @@ PAGINATION_SETTINGS = {
 """
 Django Recaptcha
 """
-RECAPTCHA_PUBLIC_KEY = '6LfQgOAZAAAAAN6CK6ubBovyhi9WM1G-ELQ8x6ih'
-RECAPTCHA_PRIVATE_KEY = '6LfQgOAZAAAAAI1bJRrg5ysZ_93iGT0SfU6UyMmY'
+RECAPTCHA_PUBLIC_KEY = '***'
+RECAPTCHA_PRIVATE_KEY = '***'
 
 """
 Shop Order Session
