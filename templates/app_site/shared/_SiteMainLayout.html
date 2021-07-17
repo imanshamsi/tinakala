@@ -1,0 +1,34 @@
+{% load static %}
+{% load render_partial %}
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    {% render_partial 'tinakala.views.site_head_tags' %}
+    {% include 'app_site/shared/_SiteHeaderRef.html' %}
+    {% block header_ref %}{% endblock %}
+
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- Start header -->
+    {% render_partial 'tinakala.views.header' %}
+    <!-- End header -->
+
+    <!-- Start main-content -->
+    {% block content %}{% endblock %}
+    <!-- End main-content -->
+
+    <!-- Start footer -->
+    {% render_partial 'tinakala.views.footer' %}
+    <!-- End footer -->
+
+</div>
+
+{% include 'app_site/shared/_SiteFooterRef.html' %}
+{% block footer_ref %}{% endblock %}
+</body>
+
+</html>

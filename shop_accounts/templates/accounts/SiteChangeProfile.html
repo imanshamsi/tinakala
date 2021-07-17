@@ -1,0 +1,149 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+{% block header_ref %}
+    <link rel="stylesheet" href="{% static 'app_site/css/vendor/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+            <div class="row" style="transform: none;">
+
+                <!-- Start Sidebar -->
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 order-lg-1" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                    <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px; left: 74.6px;">
+                        <div class="profile-sidebar dt-sl">
+                            {% render_partial 'shop_accounts.views.user_profile_panel' %}
+                            {% render_partial 'shop_accounts.views.user_profile_sidebar_menu' %}
+                        </div>
+                        <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 770px;">
+                                </div>
+                            </div>
+                            <div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Sidebar -->
+
+                <!-- Start Content -->
+                <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12">
+                    <div class="row">
+                        <div class="col-md-10 col-sm-12 mx-auto">
+                            <div class="px-3 px-res-0">
+                                <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2 px-res-1">
+                                    <h2>ویرایش اطلاعات شخصی</h2>
+                                </div>
+                                <div class="form-ui additional-info dt-sl dt-sn pt-4">
+                                    {% if messages %}
+                                        {% for message in messages %}
+                                            <div class="alert alert-warning w-100 mb-2">
+                                                <p style="font-size: 15px" class="my-auto p-2 text-right">{{ message }}</p>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <form action="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.first_name.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            {{ change_profile_form.first_name }}
+                                        </div>
+                                        {% for error in change_profile_form.first_name.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.last_name.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            {{ change_profile_form.last_name }}
+                                        </div>
+                                        {% for error in change_profile_form.last_name.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.national_code.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            {{ change_profile_form.national_code }}
+                                        </div>
+                                        {% for error in change_profile_form.national_code.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.birth_day.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            {{ change_profile_form.birth_day }}
+                                        </div>
+                                        {% for error in change_profile_form.birth_day.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.phone.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            {{ change_profile_form.phone }}
+                                        </div>
+                                        {% for error in change_profile_form.phone.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_profile_form.gender.label }}</h3>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="custom-select-ui">
+                                                {{ change_profile_form.gender }}
+                                            </div>
+                                        </div>
+                                        {% for error in change_profile_form.gender.errors %}
+                                            <p class="text-danger mt-2">{{ error }}</p>
+                                        {% endfor %}
+                                        <div class="form-row-title">
+                                            <h3>{{ change_avatar_form.avatar.label }}</h3>
+                                        </div>
+                                        <div class="form-row mt-2">
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    {{ change_avatar_form.avatar }}
+                                                </div>
+                                            </div>
+                                            {% if profile_current_avatar %}
+                                                <div class="btn-block text-left">
+                                                    <a href="{{ profile_current_avatar.url }}" target="_blank">
+                                                        {{ profile_current_avatar.name }} عکس جاری
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <hr>
+                                        <div class="dt-sl">
+                                            <div class="form-row mt-3 justify-content-center">
+                                                <button class="btn-primary-cm btn-with-icon ml-2">
+                                                    <i class="mdi mdi-account-circle-outline"></i>
+                                                    ثبت اطلاعات کاربری
+                                                </button>
+                                                <a class="btn-primary-cm bg-secondary" href="{% url 'auth:user-profile' %}">انصراف</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Content -->
+
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block footer_ref %}
+    <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="dt-sn dt-sl">
+    <div class="section-title text-sm-title title-wide no-after-title-wide mb-1">
+        <h2>برچسبها</h2>
+    </div>
+    <ul class="tag-list">
+        {% for tag in tags %}
+            <li><a href="{% url 'blog:show-blogs-by-query' tag.slug %}">{{ tag.fa_title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

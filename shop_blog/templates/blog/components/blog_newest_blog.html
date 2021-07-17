@@ -1,0 +1,36 @@
+{% load jalali_tags %}
+<div class="widget-posts dt-sn dt-sl mb-3 pt-4">
+    <div class="col-12 mb-3 mt-1">
+        <div class="widget-search">
+            <form action="{% url 'blog:show-blogs-by-search' %}" method="get">
+                <input type="text" name="query" placeholder="نام مقاله یا نویسنده مورد نظر را بنویسید...">
+                <button class="btn-search-widget" type="submit">
+                    <img src="/site_static/app_site/img/theme/search.png" alt="">
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="widget-posts dt-sn dt-sl mb-3">
+    <div class="title-sidebar dt-sl mb-3">
+        <h3>جدیدترین نوشته ها</h3>
+    </div>
+    <div class="content-sidebar dt-sl">
+        {% for newest_blog in newest_blogs %}
+            <div class="item">
+                <div class="item-inner">
+                    <div class="item-thumb">
+                        <a href="{% url 'blog:show-blog-detail' newest_blog.id %}" class="img-holder" style="background-image: url({{ newest_blog.avatar.url }})"></a>
+                    </div>
+                    <p class="title">
+                        <a href="{% url 'blog:show-blog-detail' newest_blog.id %}">{{ newest_blog.title }}</a>
+                    </p>
+                    <div class="item-meta">
+                        <span class="time">{{ newest_blog.timestamp|to_jalali:'%Y/%m/%d' }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,147 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% load jalali_tags %}
+{% load render_partial %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+            <div class="row" style="transform: none;">
+
+                <!-- Start Sidebar -->
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 order-lg-1" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                    <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px; left: 74.6px;">
+                        <div class="profile-sidebar dt-sl">
+                            {% render_partial 'shop_accounts.views.user_profile_panel' %}
+                            {% render_partial 'shop_accounts.views.user_profile_sidebar_menu' %}
+                        </div>
+                        <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 770px;">
+                                </div>
+                            </div>
+                            <div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Sidebar -->
+
+                <!-- Start Content -->
+                <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert
+                            alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% else %}primary{% endif %}
+                            w-100 mb-2">
+                                <p style="font-size: 15px">{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 order-lg-1 col-12 mb-3">
+                            <div class="content-page">
+                                <div class="content-desc dt-sn dt-sl">
+                                    <header class="entry-header dt-sl mb-3">
+                                        <div class="post-meta author">
+                                            <span class="text-{{ ticket.active|yesno:'success,danger' }}">
+                                                <i class="mdi mdi-ticket"></i>
+                                                {{ ticket.active|yesno:'تیکت فعال است,تیکت غیر فعال است' }}
+                                            </span>
+                                        </div>
+                                        <div class="post-meta category">
+                                            <i class="mdi mdi-file-document"></i>
+                                            {{ ticket.title }}
+                                        </div>
+                                        <div class="post-meta date">
+                                            <i class="mdi mdi-calendar-month"></i>{{ ticket.timestamp|to_jalali:'%Y/%m/%d ساعت %H:%M' }}
+                                        </div>
+                                        <div class="post-meta author">
+                                            <i class="mdi mdi-account-circle-outline"></i>
+                                            ارسال شده توسط<a href="{% url 'auth:user-profile' %}"> {{ ticket.user.get_full_name }}</a>
+                                        </div>
+                                    </header>
+                                    <div class="container-fluid mr-3 ml-3">
+                                        {{ ticket.question|safe }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="comments-area dt-sl">
+                                {% if answer_form %}
+                                    <div class="row">
+                                        <div class="col-md-12 container-fluid">
+                                            <br>
+                                            <div class="form-ui additional-info dt-sl dt-sn pt-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <div class="form-ui dt-sl">
+                                                            <form class="form-account" action="" method="post">
+                                                                {% csrf_token %}
+                                                                {{ answer_form.media }}
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12 mb-2">
+                                                                        <div class="form-row-title">
+                                                                            <h4>
+                                                                                {{ answer_form.answer.label }}
+                                                                            </h4>
+                                                                        </div>
+                                                                        <div class="form-row justify-content-center">
+                                                                            {{ answer_form.answer }}
+                                                                        </div>
+                                                                        {% for error in answer_form.answer.errors %}
+                                                                            <p class="text-danger mt-2">{{ error }}</p>
+                                                                        {% endfor %}
+                                                                        <br>
+                                                                        <div class="form-row">
+                                                                            {{ answer_form.captcha }}
+                                                                            {% for error in answer_form.captcha.errors %}
+                                                                                <p class="text-danger mt-2">{{ error }}</p>
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 pr-4 pl-4">
+                                                                        <button type="submit" class="btn btn-sm btn-success btn-submit-form float-left">ارسال</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <ol class="comment-list">
+                                    {% for answer in answers.object_list %}
+                                        <!-- #comment-## -->
+                                        <li>
+                                            <div class="comment-body mt-3">
+                                                <div class="row">
+                                                    <div class="col-12 comment-content">
+                                                        <div class="comment-author">
+                                                            توسط {{ answer.user.get_full_name }} در تاریخ {{ answer.timestamp|to_jalali:'%Y/%m/%d ساعت %H:%M' }}
+                                                        </div>
+
+                                                        <p>{{ answer.answer|safe }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!-- #comment-## -->
+                                    {% endfor %}
+
+                                </ol>
+                                {% ifnotequal answers.pages|length 1 %}
+                                    {% include 'app_site/shared/pagination/_GenericPagination.html' with page_obj=answers %}
+                                {% endifnotequal %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Content -->
+
+            </div>
+        </div>
+    </main>
+{% endblock %}

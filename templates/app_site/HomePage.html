@@ -1,0 +1,377 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% block header_ref %}
+    <link rel="stylesheet" href="{% static 'app_site/css/toastr.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3">
+        <div class="container main-container">
+
+            <!-- Start Main-Slider -->
+            <div class="row mb-5">
+                <aside class="sidebar col-lg-4 hidden-md order-2 order-lg-1 pr-0 hidden-md">
+                    <!-- Start banner -->
+                    <div class="sidebar-inner dt-sl">
+                        <div class="sidebar-banner">
+                            <div class="row">
+                                {% for banner in group_next_slider_banners %}
+                                    <div class="col-12 {% if forloop.first %}mb-1{% endif %}">
+                                        <div class="widget-banner">
+                                            <a href="{{ banner.url }}">
+                                                <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End banner -->
+                </aside>
+                <div class="col-lg-8 col-md-12 order-1">
+                    <!-- Start main-slider -->
+                    <section id="main-slider" class="main-slider main-slider-cs mt-1 carousel slide carousel-fade card hidden-sm"
+                             data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for slide in slider %}
+                                <li data-target="#main-slider" data-slide-to="{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}"></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+
+                            {% for slide in slider %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <a class="main-slider-slide" href="{{ slide.url }}">
+                                        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="img-fluid">
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <a class="carousel-control-prev" href="#main-slider" role="button" data-slide="prev">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#main-slider" data-slide="next">
+                            <i class="mdi mdi-chevron-left"></i>
+                        </a>
+                    </section>
+                    <section id="main-slider-res" class="main-slider carousel slide carousel-fade card d-none show-sm" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            {% for slide in slider %}
+                                <li data-target="#main-slider" data-slide-to="{{ forloop.counter }}" class="{% if forloop.first %}active{% endif %}"></li>
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            {% for slide in slider %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <a class="main-slider-slide" href="{{ slide.url }}">
+                                        <img src="{{ slide.image.url }}" alt="{{ slide.title }}" class="img-fluid">
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#main-slider-res" role="button" data-slide="prev">
+                            <i class="mdi mdi-chevron-right"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#main-slider-res" data-slide="next">
+                            <i class="mdi mdi-chevron-left"></i>
+                        </a>
+                    </section>
+                    <!-- End main-slider -->
+                </div>
+            </div>
+            <!-- End Main-Slider -->
+
+        </div>
+
+        <!-- Start Product-Slider -->
+        <section class="slider-section mb-5 amazing-section" style="background: #ef394e">
+            <div class="container main-container">
+                <div class="row mb-3">
+                    <!-- Start Product-Slider -->
+                    {% if suggested %}
+                        <div class="col-12">
+                            <div class="product-carousel carousel-lg owl-carousel owl-theme">
+                                <div class="item">
+                                    <div class="amazing-product text-center pt-5">
+                                        <a href="#">
+                                            <img src="{% static 'app_site/img/theme/amazing-1.png' %}" alt="">
+                                        </a>
+                                        <a href="{% url 'products:suggested' %}" class="view-all-amazing-btn">
+                                            مشاهده همه
+                                        </a>
+                                    </div>
+                                </div>
+                                {% for product in suggested %}
+                                    <div class="item">
+                                        <div class="product-card mb-3">
+                                            <div class="product-head">
+                                                <div class="rating-stars">
+                                                    {% for star in product.avg %}
+                                                        <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                    {% endfor %}
+                                                </div>
+                                                {% if product.amazing %}
+                                                    <div class="discount">
+                                                        <span>{{ product.amazing.discount }}%</span>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                                <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                            </a>
+                                            <div class="product-card-body">
+                                                <h5 class="product-meta mt-2">
+                                                    <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                                </h5>
+                                                <span class="product-price">{% if product.status %}{{ product.get_nice_price }} تومان{% else %}ناموجود{% endif %}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- End Product-Slider -->
+
+                </div>
+            </div>
+        </section>
+        <!-- End Product-Slider -->
+
+        <div class="container main-container">
+
+            <!-- Start Product-Slider -->
+            <div class="row">
+                <div class="col-xl-10 col-lg-12 order-lg-1">
+                    <section class="slider-section dt-sl mb-5">
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="section-title text-sm-title title-wide no-after-title-wide">
+                                    <h2>پرفروش ترین ها</h2>
+                                    <a href="{% url 'products:search' %}?sorted=most_sales">مشاهده همه</a>
+                                </div>
+                            </div>
+
+                            <!-- Start Product-Slider -->
+                            <div class="col-12 px-res-0">
+                                <div class="product-carousel carousel-md owl-carousel owl-theme">
+                                    {% for product in most_sales %}
+                                        <div class="item">
+                                            <div class="product-card">
+                                                <div class="product-head">
+                                                    <div class="rating-stars">
+                                                        {% for star in product.avg %}
+                                                            <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                        {% endfor %}
+                                                    </div>
+                                                    {% if product.amazing %}
+                                                        <div class="discount">
+                                                            <span>{{ product.amazing.discount }}%</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                                    <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                                </a>
+                                                <div class="product-card-body">
+                                                    <h5 class="product-meta mt-2">
+                                                        <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                                    </h5>
+                                                    <span class="product-price">{% if product.status %}{{ product.get_nice_price }} تومان{% else %}ناموجود{% endif %}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- End Product-Slider -->
+
+                        </div>
+                    </section>
+                </div>
+                <div class="col-xl-2 col-lg-3 hidden-lg">
+                    <div class="widget-suggestion dt-sn pt-3 mt-9">
+                        <div class="widget-suggestion-title">
+                            پیشنهادلحظه ای برای شما
+                        </div>
+                        <div id="progressBar">
+                            <div class="slide-progress"></div>
+                        </div>
+                        <div id="suggestion-slider" class="owl-carousel owl-theme">
+
+                            {% for product in advice %}
+                                <div class="item">
+                                    <div class="product-card mb-3">
+                                        <div class="product-head">
+                                            <div class="rating-stars">
+                                                {% for star in product.avg %}
+                                                    <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                            <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                        </a>
+                                        <div class="product-card-body">
+                                            <h5 class="product-meta mt-2">
+                                                <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                            </h5>
+                                            <span class="product-price">{% if product.status %}{{ product.get_nice_price }} تومان{% else %}ناموجود{% endif %}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Product-Slider -->
+
+            <!-- Start Banner -->
+            <div class="row mt-3 mb-5">
+                {% for banner in group_below_most_sales_banners %}
+                    <div class="col-sm-6 col-12 mb-2">
+                        <div class="widget-banner">
+                            <a href="{{ banner.url }}">
+                                <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+        <!-- End Banner -->
+
+        </div>
+
+        <div class="container main-container">
+            <!-- Start Product-Slider -->
+            <section class="slider-section dt-sl mb-5">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="section-title text-sm-title title-wide no-after-title-wide">
+                            <h2>پر بازدید ترین ها</h2>
+                            <a href="{% url 'products:search' %}?sorted=most_visited">مشاهده همه</a>
+                        </div>
+                    </div>
+
+                    <!-- Start Product-Slider -->
+                    <div class="col-12">
+                        <div class="product-carousel carousel-lg owl-carousel owl-theme">
+                            {% for product in most_visited %}
+                                <div class="item">
+                                    <div class="product-card mb-3">
+                                        <div class="product-head">
+                                            <div class="rating-stars">
+                                                {% for star in product.avg %}
+                                                    <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                {% endfor %}
+                                            </div>
+                                            {% if product.amazing %}
+                                                <div class="discount">
+                                                    <span>{{ product.amazing.discount }}%</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                            <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                        </a>
+                                        <div class="product-card-body">
+                                            <h5 class="product-meta mt-2">
+                                                <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                            </h5>
+                                            <span class="product-price">{% if product.status %}{{ product.get_nice_price }} تومان{% else %}ناموجود{% endif %}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- End Product-Slider -->
+
+                </div>
+            </section>
+            <!-- End Product-Slider -->
+
+            <!-- Start Product-Slider -->
+            <section class="slider-section dt-sl mb-5">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <div class="section-title text-sm-title title-wide no-after-title-wide">
+                            <h2>جدید ترین ها</h2>
+                            <a href="{% url 'products:search' %}">مشاهده همه</a>
+                        </div>
+                    </div>
+
+                    <!-- Start Product-Slider -->
+                    <div class="col-12">
+                        <div class="product-carousel carousel-lg owl-carousel owl-theme">
+                            {% for product in newest %}
+                                <div class="item">
+                                    <div class="product-card mb-3">
+                                        <div class="product-head">
+                                            <div class="rating-stars">
+                                                {% for star in product.avg %}
+                                                    <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                {% endfor %}
+                                            </div>
+                                            {% if product.amazing %}
+                                                <div class="discount">
+                                                    <span>{{ product.amazing.discount }}%</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                            <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                        </a>
+                                        <div class="product-card-body">
+                                            <h5 class="product-meta mt-2">
+                                                <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                            </h5>
+                                            <span class="product-price">{% if product.status %}{{ product.get_nice_price }} تومان{% else %}ناموجود{% endif %}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- End Product-Slider -->
+
+                </div>
+            </section>
+            <!-- End Product-Slider -->
+            <!-- Start Brand-Slider -->
+            <section class="slider-section dt-sl mb-5">
+                <div class="row">
+                    <!-- Start Product-Slider -->
+                    <div class="col-12">
+                        <div class="brand-slider carousel-lg owl-carousel owl-theme mb-3">
+                            {% for brand in brands %}
+                                <div class="item">
+                                    <a href="{% url 'products:product_by_brand' brand.en_title %}"><img src="{{ brand.avatar.url }}" class="img-fluid" alt="{{ brand.title }}"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- End Product-Slider -->
+                </div>
+            </section>
+            <!-- End Brand-Slider -->
+
+        </div>
+    </main>
+{% endblock %}
+{% block footer_ref %}
+    <script src="{% static 'app_site/js/toastr.js' %}"></script>
+    <script>
+        {% for message in messages %}
+            toastr.success('{{  message }}');
+        {% endfor %}
+    </script>
+{% endblock %}

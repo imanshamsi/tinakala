@@ -1,0 +1,170 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+
+            <div class="row" style="transform: none;">
+                {% if cart %}
+                    <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12 mb-2 px-0">
+                        <nav class="tab-cart-page">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                                    سبد خرید<span class="count-cart">{{ cart|length }}</span>
+                                </a>
+                            </div>
+                        </nav>
+                    </div>
+                {% endif %}
+                <div class="col-12" style="transform: none;">
+                    {% if cart %}
+                        <div class="tab-content" id="nav-tabContent" style="transform: none;">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="transform: none;">
+                                <div class="row" style="transform: none;">
+                                    <div class="col-xl-9 col-lg-8 col-12 px-0">
+                                        <div class="table-responsive checkout-content dt-sl">
+                                            <table class="table table-cart">
+                                                <tbody>
+                                                {% for item in cart %}
+                                                    {% with product=item.product %}
+
+                                                        <tr class="checkout-item">
+                                                            <td>
+                                                                <img style="width: 100px;height: 100px" src="{{ product.avatar.url }}" alt="">
+                                                                <a href="{% url 'cart:user-cart-remove' item.product.code %}" class="checkout-btn-remove">×</a>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <a href="{% url 'products:detail_product' product.code product.slug %}">
+                                                                    <h3 class="checkout-title">
+                                                                        {{ product.title|truncatechars:45 }}
+                                                                    </h3>
+                                                                </a>
+                                                                <p class="checkout-dealer">
+                                                                    قیمت: {{ item.nice_price }} تومان × {{ item.product_count }}
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <p class="mb-0">تعداد</p>
+                                                                <form action="{% url 'cart:user-cart-add' product.code %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <div class="row justify-content-center">
+                                                                        <div class="mt-1">
+                                                                            {{ item.update_product_count_form.product_count }}
+                                                                            {{ item.update_product_count_form.update }}
+                                                                        </div>
+                                                                        {% for error in item.update_product_count_form.update.errors %}
+                                                                            <p class="text-danger">{{ error }}</p>
+                                                                        {% endfor %}
+
+                                                                        <div>
+                                                                            <button class="btn btn-sm btn-primary mr-1 mt-1" type="submit"><i class="mdi mdi-update"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </td>
+                                                            <td><strong>{{ item.nice_total_price }} تومان</strong></td>
+                                                        </tr>
+
+                                                    {% endwith %}
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-4 col-12 w-res-sidebar" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+
+
+                                        <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;"><div class="dt-sn mb-2">
+                                            <ul class="checkout-summary-summary">
+                                                <li>
+                                                    <span>مبلغ کل ({{ cart|length }} کالا)</span><span>{{ cart.get_nice_total_price }} تومان</span>
+                                                </li>
+                                                <li class="checkout-summary-discount">
+                                                    <span>امتیاز شما از خرید</span>
+                                                    <span>
+                                                        <span></span>
+                                                        {{ cart.get_point_shop }}
+                                                        امتیاز
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                            <div class="checkout-summary-devider">
+                                                <div></div>
+                                            </div>
+                                            <div class="checkout-summary-content">
+                                                <div class="checkout-summary-price-title">مبلغ قابل پرداخت:</div>
+                                                <div class="checkout-summary-price-value">
+                                                    <span class="checkout-summary-price-value-amount">{{ cart.get_nice_total_price }}</span>
+                                                    تومان
+                                                </div>
+                                                <a href="{% url 'order:check-out' %}" class="mb-2 d-block">
+                                                    <button class="btn-primary-cm btn-with-icon w-100 text-center pr-0">
+                                                        <i class="mdi mdi-arrow-left"></i>
+                                                        ادامه ثبت سفارش
+                                                    </button>
+                                                </a>
+                                                <div>
+                                                    <span>
+                                                        کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت سفارش
+                                                        مراحل بعدی را تکمیل کنید.
+                                                    </span>
+                                                    <span class="help-sn" data-toggle="tooltip" data-html="true" data-placement="bottom" title="" data-original-title="<div class='help-container is-right'><div class='help-arrow'></div><p class='help-text'>محصولات موجود در سبد خرید شما تنها در صورت ثبت و پرداخت سفارش برای شما رزرو می‌شوند. در صورت عدم ثبت سفارش، دیجی‌کالا هیچگونه مسئولیتی در قبال تغییر قیمت یا موجودی این کالاها ندارد.</p></div>">
+                                                        <span class="mdi mdi-information-outline"></span>
+                                                    </span></div>
+                                            </div>
+                                        </div><div class="dt-sn checkout-feature-aside pt-4">
+                                            <ul>
+                                                <li class="checkout-feature-aside-item">
+                                                    <img src="{% static 'app_site/img/svg/return-policy.svg' %}" alt="">
+                                                    هفت روز ضمانت تعویض
+                                                </li>
+                                                <li class="checkout-feature-aside-item">
+                                                    <img src="{% static 'app_site/img/svg/payment-terms.svg' %}" alt="">
+                                                    پرداخت در محل با کارت بانکی
+                                                </li>
+                                                <li class="checkout-feature-aside-item">
+                                                    <img src="{% static 'app_site/img/svg/delivery.svg' %}" alt="">
+                                                    تحویل اکسپرس
+                                                </li>
+                                            </ul>
+                                        </div>
+                                            <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                                                <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                                    <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 590px;"></div>
+                                                </div>
+                                                <div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                                    <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="container main-container">
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="dt sl dt-sn pt-3 pb-5">
+                                        <div class="cart-page cart-empty">
+                                            <div class="circle-box-icon"><i class="mdi mdi-cart-remove"></i></div>
+                                            <p class="cart-empty-title">سبد خرید شما خالیست!</p>
+                                            <p>می‌توانید برای مشاهده محصولات بیشتر به صفحات زیر بروید:</p>
+                                            <div class="cart-empty-links mb-5">
+                                                <a href="{% url 'auth:user-favorite' %}" class="border-bottom-dt">لیست مورد علاقه من</a>
+                                                <a href="#" class="border-bottom-dt">محصولات پرفروش</a>
+                                            </div>
+                                            <a href="{% url 'home-page' %}" class="btn-primary-cm">ادامه خرید در تیناکالا</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

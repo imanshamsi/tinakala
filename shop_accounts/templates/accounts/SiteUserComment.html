@@ -1,0 +1,110 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+            <div class="row" style="transform: none;">
+
+                <!-- Start Sidebar -->
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-12 order-lg-1" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                    <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px; left: 74.6px;">
+                        <div class="profile-sidebar dt-sl">
+                            {% render_partial 'shop_accounts.views.user_profile_panel' %}
+                            {% render_partial 'shop_accounts.views.user_profile_sidebar_menu' %}
+                        </div>
+                        <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 770px;">
+                                </div>
+                            </div>
+                            <div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Sidebar -->
+
+                <!-- Start Content -->
+                <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert
+                            alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% else %}primary{% endif %}
+                            w-100 mb-2">
+                                <p style="font-size: 15px">{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2 px-res-1">
+                                <h2>نقد و نظرات</h2>
+                            </div>
+                            <div class="dt-sl">
+                                <div class="row">
+                                    {% if comments %}
+                                        {% for comment in comments.object_list %}
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="card-horizontal-product">
+                                                    <div class="card-horizontal-product-thumb">
+                                                        <a href="{% url 'products:detail_product' comment.product_code comment.product_slug %}">
+                                                            <img src="{{ comment.product_avatar }}" alt="">
+                                                        </a>
+                                                        <small class="font-weight-bold">امتیاز من به محصول</small>
+                                                        <div class="rating-stars">
+                                                            {% for star in comment.product_avg %}
+                                                                <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-horizontal-product-content">
+                                                        <div class="label-status-{{ comment.verified|yesno:'comment,denied' }}">{{ comment.verified|yesno:"تایید شده,تایید نشده" }}</div>
+                                                        <div class="card-horizontal-comment-title">
+                                                            <a href="{% url 'products:detail_product' comment.product_code comment.product_slug %}">
+                                                                <h3>{{ comment.title }}</h3>
+                                                            </a>
+                                                        </div>
+                                                        <div class="card-horizontal-comment">
+                                                            <p>{{ comment.comment }}</p>
+                                                        </div>
+                                                        <div class="card-horizontal-product-buttons">
+                                                            <div class="float-right">
+                                                            <span class="count-like">
+                                                                <i class="mdi mdi-thumb-up-outline"></i>
+                                                                {{ comment.positive }}
+                                                            </span>
+                                                                <span class="count-like">
+                                                                <i class="mdi mdi-thumb-down-outline"></i>
+                                                                    {{ comment.negative }}
+                                                            </span>
+                                                            </div>
+                                                            <a href="{% url 'auth:user-comment-delete' comment.id %}" class="btn btn-light">حذف</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    {% else %}
+                                        <div class="container-fluid bg-white">
+                                            <div class="alert alert-warning btn-block mt-3">
+                                                نظری توسط حساب شما ثبت نشده است.
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% ifnotequal comments.pages|length 1 %}
+                                    {% include 'app_site/shared/pagination/_GenericPagination.html' with page_obj=comments %}
+                                {% endifnotequal %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Content -->
+
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+{% load jalali_tags %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+            <div class="row mt-5" style="transform: none;">
+                <div class="col-lg-9 col-md-8 col-sm-12 order-lg-1 col-12 mb-3">
+                    <div class="row">
+
+                        {% if object_list %}
+                            {% for blog in object_list %}
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                                    <div class="post-card">
+                                        <div class="post-thumbnail">
+                                            <a href="{% url 'blog:show-blog-detail' blog.id %}" data-toggle="tooltip" data-placement="bottom" title="{{ blog.title }}">
+                                                <img src="{{ blog.avatar.url }}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="post-title">
+                                            <a href="{% url 'blog:show-blog-detail' blog.id %}">
+                                                {{ blog.title|truncatechars:30 }}
+                                            </a>
+                                            <span class="post-date">{{ blog.timestamp|to_jalali:'%Y/%m/%d ساعت %H:%M' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="dt-sl dt-sn pt-3 pb-5">
+                                <div class="alert alert-warning mr-2 ml-2 mt-1">
+                                    جستجو
+
+                                    با هیچ مقاله ای هم‌خوانی نداشت.
+                                </div>
+                                <div class="mr-3">
+                                    تلاش کنید:
+                                    <br>
+                                    <br>
+                                    - از عبارت‌های متداول‌تر استفاده کنید.
+                                    <br>
+                                    <br>
+                                    - املای عبارت وارد شده را بررسی کنید.
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {% ifnotequal page_obj.pages|length 1 %}
+                                {% include 'app_site/shared/pagination/_GenericPagination.html' %}
+                            {% endifnotequal %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 col-12 mb-3 sidebar" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                    <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none; top: 0px; left: 1124.6px;">
+                        {# New Post #}
+                        {% render_partial 'shop_blog.views.newest_blog_view' %}
+                        {# New Post #}
+                        {# Category #}
+                        {% render_partial 'shop_blog.views.categories_blog_view' %}
+                        {# Category #}
+                        {# Tags #}
+                        {% render_partial 'shop_blog.views.tags_blog_view' %}
+                        {# Tags #}
+                        <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 944px;"></div>
+                            </div><div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

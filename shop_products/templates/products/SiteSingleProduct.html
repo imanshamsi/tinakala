@@ -1,0 +1,495 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% load jalali_tags %}
+{% block header_ref %}
+    <link rel="stylesheet" href="{% static 'app_site/css/vendor/fancybox.min.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3">
+        <div class="container main-container">
+            <!-- Start title - breadcrumb -->
+            <div class="title-breadcrumb-special dt-sl mb-3">
+                <div class="breadcrumb dt-sl">
+                    <nav>
+                        {% for category in categories %}
+                            <a href="{% url 'products:search_by_category' category.en_title %}">{{ category.title }}</a>
+                        {% endfor %}
+
+                        <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title }}</a>
+                    </nav>
+                </div>
+            </div>
+            <!-- End title - breadcrumb -->
+
+            <!-- Start Product -->
+            <div class="dt-sn mb-5 dt-sl">
+                <div class="row">
+                    <!-- Product Gallery-->
+                    <div class="col-lg-4 col-md-6 pb-5 ps-relative">
+                        <!-- Product Options-->
+                        <ul class="gallery-options">
+                            <li>
+                                <button class="add-product-to-favorites {% if is_favorite %}favorites{% endif %} " data-url="{% url 'auth:user-favorite-add' product.slug %}">
+                                    <i class="mdi mdi-heart"></i>
+                                </button>
+                                {% if not is_favorite %}<span class="tooltip-option">افزودن به علاقمندی</span>{% endif %}
+                            </li>
+                        </ul>
+                        {% if amazing %}
+                            <div class="product-timeout position-relative pt-5 mb-3">
+                                <div class="promotion-badge">
+                                    فروش ویژه
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="product-gallery">
+
+                            <div class="product-carousel owl-carousel owl-rtl owl-loaded owl-drag">
+                                <div class="owl-stage-outer">
+                                    <div class="owl-stage" style="transform: translate3d(1194px, 0px, 0px); transition: all 0.25s ease 0s; width: 1592px;">
+                                        <div class="owl-item" style="width: 397.987px;"><div class="item active">
+                                            <a class="gallery-item" href="{{ product.avatar.url }}" data-fancybox="gallery1" data-hash="one">
+                                                <img src="{{ product.avatar.url }}" alt="Product">
+                                            </a>
+                                        </div>
+                                        </div>
+                                        {% for product_media_image in product_media_images %}
+                                            <div class="owl-item" style="width: 397.987px;">
+                                                <div class="item active">
+                                                    <a class="gallery-item" href="{{ product_media_image.media.url }}" data-fancybox="gallery1" data-hash="{{ forloop.counter }}">
+                                                        <img src="{{ product_media_image.media.url }}" alt="Product">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <ul class="product-thumbnails">
+                                <li class="active">
+                                    <a href="">
+                                        <img src="{{ product.avatar.url }}" alt="Product">
+                                    </a>
+                                </li>
+                                {% for product_media_image in product_media_images %}
+                                    <li class="">
+                                        <a href="">
+                                            <img src="{{ product_media_image.media.url }}" alt="Product">
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% for product_media_video in product_media_videos %}
+                                    <li>
+                                        <a class="navi-link text-sm" href="{{ product_media_video.media.url }}" data-fancybox="" data-width="960" data-height="640">
+                                            <i class="mdi mdi-video text-lg d-block mb-1"></i>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Product Info -->
+                    <div class="col-lg-8 col-md-6 pb-5">
+                        <div class="product-info dt-sl">
+                            <div class="product-title dt-sl">
+                                <h1>{{ product.title }}
+                                </h1>
+                                {% if product.en_title %}
+                                    <h3>{{ product.en_title }}</h3>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="dt-sl mt-4 mb-2">
+                                <div class="row">
+                                    <div class="col-md-8 col-sm-12">
+                                        <ul class="content-expert-rating">
+                                            <li>
+                                                <div class="cell">ارزش خرید ({{ param_avg.worth.value }}%)</div>
+                                                <div class="cell">
+                                                    <div class="rating rating--general" data-rate-digit="{{ param_avg.worth.stage }}">
+                                                        <div class="rating-rate" data-rate-value="100%" style="width: {{ param_avg.worth.value }}%;"></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="cell">کیفیت تولید ({{ param_avg.quality.value }}%)</div>
+                                                <div class="cell">
+                                                    <div class="rating rating--general" data-rate-digit="{{ param_avg.quality.stage }}">
+                                                        <div class="rating-rate" data-rate-value="100%" style="width: {{ param_avg.quality.value }}%;"></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="cell">عملکرد ({{ param_avg.function.value }}%)</div>
+                                                <div class="cell">
+                                                    <div class="rating rating--general" data-rate-digit="{{ param_avg.function.stage }}">
+                                                        <div class="rating-rate" data-rate-value="100%" style="width: {{ param_avg.function.value }}%;"></div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 dt-sl">
+                                <h2>کد محصول: {{ product.code }}</h2>
+                            </div>
+                            <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 dt-sl">
+                                {% if product.status %}
+                                    <h2>قیمت : <span class="price">
+                                        {% if not amazing %}
+                                            {{ product.get_nice_price }}
+                                        {% else %}
+                                            {{ amazing.get_nice_price }}
+                                        {% endif %}
+                                        تومان</span>
+                                    </h2>
+                                {% endif %}
+                            </div>
+                            <div class="dt-sl mt-4">
+                                {% if product.status %}
+                                    {% if product.inventory < 6 %}
+                                        <div class="section-title text-sm-title title-wide no-after-title-wide mb-1 dt-sl">
+                                            <h7 class="text-danger">
+                                                تنها {{ product.inventory }} عدد در انبار باقی مانده
+                                            </h7>
+                                        </div>
+                                        <br>
+                                    {% endif %}
+                                    <div>
+                                        <form class="row" action="{% url 'cart:user-cart-add' product.code %}" method="post">
+                                            {% csrf_token %}
+                                            {{ cart_add_product_form.update }}
+                                            <button type="submit" class="btn-primary-cm btn-with-icon mt-1">
+                                                <img src="{% static 'app_site/img/theme/shopping-cart.png' %}" alt="">
+                                                افزودن به سبد خرید
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <a href="{% url 'products:detail_product' product.code product.slug %}" class="btn-primary-cm bg-secondary btn-with-icon">
+                                        <i class="mdi mdi-information"></i>
+                                        {{ product.get_status_display }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dt-sn mb-5 px-0 dt-sl pt-0">
+                <!-- Start tabs -->
+                <section class="tabs-product-info mb-3 dt-sl">
+                    <div class="ah-tab-wrapper dt-sl">
+                        <div class="ah-tab dt-sl">
+                            <a class="ah-tab-item" href="" style="transform: translateX(0px);" data-ah-tab-active="true">
+                                <i class="mdi mdi-glasses"></i>نقد و بررسی
+                            </a>
+                            <a class="ah-tab-item" href="" style="transform: translateX(0px);">
+                                <i class="mdi mdi-format-list-checks"></i>مشخصات
+                            </a>
+                            <a class="ah-tab-item" href="" style="transform: translateX(0px);">
+                                <i class="mdi mdi-comment-text-multiple-outline"></i>نظرات کاربران
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ah-tab-content-wrapper product-info px-4 dt-sl">
+                        <div class="ah-tab-content dt-sl" data-ah-tab-active="true">
+                            <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 dt-sl">
+                                <h2>نقد و بررسی</h2>
+                            </div>
+                            <div class="product-title dt-sl">
+                                <h1>{{ product.title }}</h1>
+                                {% if product.en_title %}
+                                    <h3>{{ product.en_title }}</h3>
+                                {% endif %}
+                            </div>
+                            <div class="description-product dt-sl mt-3 mb-3">
+                                <div class="container">
+                                    {{ product.review|safe }}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ah-tab-content params dt-sl">
+                            <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 dt-sl">
+                                <h2>مشخصات فنی</h2>
+                            </div>
+                            <div class="product-title dt-sl mb-3">
+                                <h1>{{ product.title }}
+                                </h1>
+                                {% if product.en_title %}
+                                    <h3>{{ product.en_title }}</h3>
+                                {% endif %}
+                            </div>
+                            {% for attr_group_key in attr_group_keys %}
+                                <section>
+                                    <h3 class="params-title">{{ attr_group_key }}</h3>
+                                    <ul class="params-list">
+                                        {% for attr_attribute_key in attr_attribute_keys %}
+                                            {% ifequal attr_attribute_key.group attr_group_key %}
+                                                <li>
+                                                    <div class="params-list-key">
+                                                        <span class="d-block">{{ attr_attribute_key.key }}</span>
+                                                    </div>
+                                                    <div class="params-list-value">
+                                                <span class="d-block">
+                                                    {{ attr_attribute_key.value }}
+                                                </span>
+                                                    </div>
+                                                </li>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    </ul>
+                                </section>
+                            {% endfor %}
+
+
+                        </div>
+                        <div class="ah-tab-content comments-tab dt-sl">
+                            <div class="section-title title-wide no-after-title-wide mb-0 dt-sl">
+                                <h2>نظرات کاربران راجع به:</h2>
+                            </div>
+                            <div class="product-title dt-sl mb-3">
+                                <h1>{{ product.title }}
+                                </h1>
+                                <h3>{% if product.en_title %}{{ product.en_title }}{% endif %}
+                                    <span class="rate-product">({{ total_avg }} از 5 | {{ number_of_comments }} نفر)</span>
+                                </h3>
+                            </div>
+                            <div class="dt-sl">
+                                <div class="row mb-2">
+                                    <div class="col-md-4 col-sm-12">
+                                        <br><h3>دیگران را با نوشتن نظرات خود، برای انتخاب این محصول راهنمایی کنید.</h3><br>
+                                        <div class="desc-comment">
+                                            <p>لطفا پیش از ارسال نظر، خلاصه قوانین زیر را مطالعه کنید:</p>
+                                            <p>فارسی بنویسید و از کیبورد فارسی استفاده کنید. بهتر است از فضای خالی (Space)
+                                                بیش‌از‌حدِ معمول، شکلک یا ایموجی استفاده نکنید و از کشیدن حروف یا کلمات با
+                                                صفحه‌کلید بپرهیزید.</p>
+                                            <p>نظرات خود را براساس تجربه و استفاده‌ی عملی و با دقت به نکات فنی ارسال کنید؛
+                                                بدون
+                                                تعصب به محصول خاص، مزایا و معایب را بازگو کنید و بهتر است از ارسال نظرات
+                                                چندکلمه‌‌ای خودداری کنید.</p>
+                                            <p>بهتر است در نظرات خود از تمرکز روی عناصر متغیر مثل قیمت، پرهیز کنید.</p>
+                                            <p>به کاربران و سایر اشخاص احترام بگذارید. پیام‌هایی که شامل محتوای توهین‌آمیز و
+                                                کلمات نامناسب باشند، حذف می‌شوند.</p>
+                                        </div>
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                        <div class="col-md-8 col-sm-12">
+                                            <div class="comments-summary-note">
+                                                <div class="form-ui additional-info dt-sl dt-sn pt-3">
+                                                    <form class="form-account" action="" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-md-7 col-sm-12 mb-2">
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.title.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.title }}
+                                                                    </div>
+                                                                    {% for error in comment_form.title.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.comment.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.comment }}
+                                                                    </div>
+                                                                    {% for error in comment_form.comment.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                    <br>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.captcha }}
+                                                                        {% for error in comment_form.captcha.errors %}
+                                                                            <p class="text-danger mt-2">{{ error }}</p>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-12 pr-4 pl-4 pt-2">
+                                                                    <p class="d-block">با “ثبت نظر” موافقت خود را با
+                                                                        <a href="{% url 'info:site_privacy' %}" class="border-bottom-dt" target="_blank">قوانین انتشار محتوا</a>
+                                                                        در تینا‌کالا اعلام می‌کنم.</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5 col-sm-12 mb-2">
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.worth.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.worth }}
+                                                                    </div>
+                                                                    {% for error in comment_form.worth.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.quality.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.quality }}
+                                                                    </div>
+                                                                    {% for error in comment_form.quality.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.function.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.function }}
+                                                                    </div>
+                                                                    {% for error in comment_form.function.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <div class="col-md-12 col-sm-12 mb-2">
+                                                                    <div class="form-row-title">
+                                                                        <h4>
+                                                                            {{ comment_form.advised.label }}
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        {{ comment_form.advised }}
+                                                                    </div>
+                                                                    {% for error in comment_form.advised.errors %}
+                                                                        <p class="text-danger mt-2">{{ error }}</p>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <button type="submit" class="btn btn btn-primary px-3 float-left">
+                                                                    <i class="mdi mdi-comment-text-outline"></i>
+                                                                    ثبت نظر جدید
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-8 col-sm-12">
+                                            <div class="alert alert-warning w-100">
+                                                برای ارسال نظر باید وارد سایت شوید. <a href="{% url 'auth:login' %}">وارد می شوید؟</a><br>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if object_list.object_list %}
+                                    <div class="comments-area dt-sl">
+                                        <div class="section-title text-sm-title title-wide no-after-title-wide mb-0 dt-sl">
+                                            <h2>نظرات کاربران</h2>
+                                            <p class="count-comment">{{ number_of_comments }} نظر</p>
+                                        </div>
+                                        <ol class="comment-list">
+                                            {% for comment in object_list.object_list %}
+                                                <!-- #comment-## -->
+                                                <li>
+                                                    <div class="comment-body">
+                                                        <div class="row">
+                                                            <div class="col-md-3 col-sm-12">
+                                                                {% if comment.is_buyer %}
+                                                                    <div class="message-light message-light--purchased">خریدار این محصول</div>
+                                                                {% endif %}
+                                                                <div class="message-light message-light--opinion-{{ comment.advised|yesno:'positive,negative' }}">
+                                                                    {{ comment.get_advised_text }}</div>
+                                                            </div>
+                                                            <div class="col-md-9 col-sm-12 comment-content">
+                                                                <div class="comment-title">
+                                                                    {{ comment.title }}
+                                                                </div>
+                                                                <div class="comment-author">
+                                                                    توسط {{ comment.user_fullname }} در تاریخ {{ comment.timestamp|to_jalali:'%Y/%m/%d' }}
+                                                                </div>
+
+                                                                <p>{{ comment.comment }}</p>
+
+                                                                <div class="footer">
+                                                                    <div class="comments-likes">
+                                                                        آیا این نظر برایتان مفید بود؟
+                                                                        <button class="btn-like" data-counter="{{ comment.positive }}">
+                                                                            <a class="text-black-50" href="{% url 'auth:user-comment-positive-vote' comment.id %}">بله</a>
+                                                                        </button>
+                                                                        <button class="btn-like" data-counter="{{ comment.negative }}">
+                                                                            <a class="text-black-50" href="{% url 'auth:user-comment-negative-vote' comment.id %}">خیر</a>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+
+                                        </ol>
+                                        {% ifnotequal object_list.pages|length 1 %}
+                                            {% include 'app_site/shared/pagination/_GenericPagination.html' with page_obj=object_list %}
+                                        {% endifnotequal %}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning">
+                                        نظری برای این کالا ثبت نشده است.
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- End tabs -->
+            </div>
+            <!-- End Product -->
+
+        </div>
+    </main>
+{% endblock %}
+{% block footer_ref %}
+    <script src="{% static 'app_site/js/toastr.js' %}"></script>
+    <script>
+        $('.add-product-to-favorites').on('click', function () {
+            {% if request.user.is_authenticated %}
+                var url = $(this).data('url');
+                $.get({
+                    url: url,
+                    data: {},
+                    success: function (result) {
+                        if (result[1] === true) {
+                            $('.add-product-to-favorites').addClass('favorites')
+                        }else{
+                            $('.add-product-to-favorites').removeClass('favorites')
+                        }
+                    },
+                    error:function () {
+                        console.log(this.error)
+                    }
+                })
+            {% else %}
+                window.location.replace("{% url 'auth:login' %}")
+            {% endif %}
+        });
+    </script>
+    <script src="{% static 'app_site/js/vendor/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'app_site/js/vendor/countdown.min.js' %}"></script>
+{% endblock %}

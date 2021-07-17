@@ -1,0 +1,91 @@
+{% extends 'accounts/shared/_AccountsMainLayout.html' %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3">
+        <div class="container main-container">
+
+            <div class="row">
+                <div class="col-xl-4 col-lg-5 col-md-7 col-12 mx-auto">
+                    <div class="form-ui dt-sl dt-sn pt-4">
+                        <div class="section-title title-wide mb-1 no-after-title-wide">
+                            <h2 class="font-weight-bold">ثبت نام در  تیناکالا</h2>
+                        </div>
+                        <div class="message-light">
+                            اگر قبلا با ایمیل ثبت‌نام کرده‌اید، نیاز به ثبت‌نام مجدد ندارید
+                        </div>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form-row-title">
+                                <h3>{{ register_form.email.label }}</h3>
+                            </div>
+                            <div class="form-row with-icon">
+                                {{ register_form.email }}
+                                <i class="mdi mdi-account-circle-outline"></i>
+                                {# Start Display Errors To User #}
+                                {% for error in register_form.email.errors %}
+                                    <p class="text-danger mt-2">{{ error }}</p>
+                                {% endfor %}
+                                {# End Display Errors To User #}
+                            </div>
+                            <div class="form-row-title">
+                                <h3>{{ register_form.password.label }}</h3>
+                            </div>
+                            <div class="form-row with-icon">
+                                {{ register_form.password }}
+                                <i class="mdi mdi-lock-open-variant-outline"></i>
+                                {# Start Display Errors To User #}
+                                {% for error in register_form.password.errors %}
+                                    <p class="text-danger mt-2">{{ error }}</p>
+                                {% endfor %}
+                                {# End Display Errors To User #}
+                            </div>
+                            <div class="form-row-title">
+                                <h3>{{ register_form.verify_password.label }}</h3>
+                            </div>
+                            <div class="form-row with-icon">
+                                {{ register_form.verify_password }}
+                                <i class="mdi mdi-lock-open-variant-outline"></i>
+                                {# Start Display Errors To User #}
+                                {% for error in register_form.verify_password.errors %}
+                                    <p class="text-danger mt-2">{{ error }}</p>
+                                {% endfor %}
+                                {# End Display Errors To User #}
+                            </div>
+                            <div class="form-row mt-2">
+                                <div class="custom-control custom-checkbox float-right mt-2">
+                                    {{ register_form.agree_rule }}
+                                    <label class="custom-control-label text-justify" for="customCheck3">
+                                        {{ register_form.agree_rule.label }}
+                                    </label>
+                                    {# Start Display Errors To User #}
+                                    {% for error in register_form.agree_rule.errors %}
+                                        <p class="text-danger mt-2">{{ error }}</p>
+                                    {% endfor %}
+                                    {# End Display Errors To User #}
+                                </div>
+
+                            </div>
+                            <br>
+                            <div class="form-row">
+                                {{ register_form.captcha }}
+                                {% for error in register_form.captcha.errors %}
+                                    <p class="text-danger mt-2">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-row mt-3">
+                                <button class="btn-primary-cm btn-with-icon mx-auto w-100">
+                                    <i class="mdi mdi-account-circle-outline"></i>
+                                    ثبت نام در  تیناکالا
+                                </button>
+                            </div>
+                            <div class="form-footer text-right mt-3">
+                                <span class="d-block font-weight-bold">قبلا ثبت نام کرده اید؟</span>
+                                <a href="{% url 'auth:login' %}" class="d-inline-block mr-3 mt-2">وارد شوید</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

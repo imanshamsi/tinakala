@@ -1,0 +1,49 @@
+<div class="card-body">
+
+    {% if parent %}
+        {% for item in parent %}
+            <a href="{% url 'products:search_by_category' item.category.en_title %}" style="margin-right: -12px" class="text-primary">
+                <i class="mdi mdi-chevron-left"></i>
+                {{ item.category.title }}
+            </a>
+            <div style="height: 8px"></div>
+        {% endfor %}
+    {% endif %}
+    {% for item in child %}
+        <a href="{% url 'products:search_by_category' item.category.en_title %}" class="text-primary">
+            <i class="mdi mdi-chevron-left"></i>
+            {{ item.category.title }}
+        </a>
+        {% if item.sub_category.all %}
+            <div class="card-body" style="padding: 0.6rem 0.7rem 0.6rem 0.6rem;">
+                {% for sub in item.sub_category.all %}
+                    <div class="custom-control custom-checkbox">
+                        <a href="{% url 'products:search_by_category' sub.en_title %}" class="text-dark">
+                            <i class="mdi mdi-check"></i>
+                            {{ sub.title }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif item.category.single_category %}
+            <div class="card-body" style="padding: 0.6rem 0.7rem 0.6rem 0.6rem;">
+                <div class="custom-control custom-checkbox">
+                    <a href="{% url 'products:search_by_category' item.category.single_category.en_title %}" class="text-dark">
+                        <i class="mdi mdi-check"></i>
+                        {{ item.category.single_category.title }}
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="card-body" style="padding: 0.6rem 0.7rem 0.6rem 0.6rem;">
+                <div class="custom-control custom-checkbox">
+                    <a href="{% url 'products:search_by_category' item.category.en_title %}" class="text-dark">
+                        <i class="mdi mdi-check"></i>
+                        {{ item.category.title }}
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+
+</div>

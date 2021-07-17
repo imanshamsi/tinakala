@@ -1,0 +1,79 @@
+{% load jalali_tags %}
+<div class="col-xl-6 col-lg-12">
+    <div class="px-3">
+        <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2">
+            <h2>اطلاعات شخصی</h2>
+        </div>
+        <div class="profile-section dt-sl">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>نام و نام خانوادگی:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ user.get_full_name }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>پست الکترونیک:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ request.user.email }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>شماره تلفن همراه:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ user.phone }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>شماره همراه تایید شده:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ user.phone_verify|yesno:"بلی," }}</span>
+                        {% if not user.phone_verify %}
+                            <a class="badge badge-info" href="{% url 'auth:verify-phone' %}">
+                                <span class="p-1" style="font-size: 11px">شماره همراه شما تایید نشده است</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>کد ملی:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ user.national_code }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>جنسیت کاربر:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{% if user.gender is 1 %}مرد{% else %}زن{% endif %}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="label-info">
+                        <span>تاریخ تولد:</span>
+                    </div>
+                    <div class="value-info">
+                        <span>{{ user.birth_day|to_jalali:'%Y/%m/%d' }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-section-link">
+                <a href="{% url 'auth:change-profile' %}" class="border-bottom-dt">
+                    <i class="mdi mdi-account-edit-outline"></i>
+                    ویرایش اطلاعات شخصی
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

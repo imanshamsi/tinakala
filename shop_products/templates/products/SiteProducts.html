@@ -1,0 +1,123 @@
+{% extends 'app_site/shared/_SiteMainLayout.html' %}
+{% load static %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3" style="transform: none;">
+        <div class="container main-container" style="transform: none;">
+
+            <div class="row" style="transform: none;">
+
+                <!-- Start Sidebar -->
+                {% include 'products/component/products_sidebar_menu.html' with child=child parent=parent form=form %}
+                <!-- End Sidebar -->
+
+                <!-- Start Content -->
+                {% if object_list.object_list %}
+                    <div class="col-lg-9 col-md-12 col-sm-12 search-card-res">
+                        <div class="dt-sl dt-sn px-0 search-amazing-tab">
+                            <div class="dt-sl">
+                                <div class="ah-tab dt-sl">
+                                    <a class="ah-tab-item"
+                                       {% ifequal request.GET.sorted 'newest' %}data-ah-tab-active="true"{% endifequal %}
+                                       {% ifequal request.GET.sorted None %}data-ah-tab-active="true"{% endifequal %}
+                                       href="?{%for key, values in request.GET.lists%}{% if values %}{%for value in values%}{% ifnotequal key 'sorted' %}{{ key }}={{ value }}&{% endifnotequal %}{%endfor%}{% endif %}{%endfor%}sorted=newest">جدید ترین</a>
+                                    <a class="ah-tab-item" {% ifequal request.GET.sorted 'most_visited' %}data-ah-tab-active="true"{% endifequal %}
+                                       href="?{%for key, values in request.GET.lists%}{% if values %}{%for value in values%}{% ifnotequal key 'sorted' %}{{ key }}={{ value }}&{% endifnotequal %}{%endfor%}{% endif %}{%endfor%}sorted=most_visited"
+                                       style="transform: translateX(0px)">پربازدید ترین</a>
+                                    <a class="ah-tab-item" {% ifequal request.GET.sorted 'most_sales' %}data-ah-tab-active="true"{% endifequal %}
+                                       href="?{%for key, values in request.GET.lists%}{% if values %}{%for value in values%}{% ifnotequal key 'sorted' %}{{ key }}={{ value }}&{% endifnotequal %}{%endfor%}{% endif %}{%endfor%}sorted=most_sales"
+                                       style="transform: translateX(0px)">پرفروش ترین</a>
+                                    <a class="ah-tab-item" {% ifequal request.GET.sorted 'cheapest' %}data-ah-tab-active="true"{% endifequal %}
+                                       href="?{%for key, values in request.GET.lists%}{% if values %}{%for value in values%}{% ifnotequal key 'sorted' %}{{ key }}={{ value }}&{% endifnotequal %}{%endfor%}{% endif %}{%endfor%}sorted=cheapest"
+                                       style="transform: translateX(0px)">ارزان ترین</a>
+                                    <a class="ah-tab-item" {% ifequal request.GET.sorted 'expensive' %}data-ah-tab-active="true"{% endifequal %}
+                                       href="?{%for key, values in request.GET.lists%}{% if values %}{%for value in values%}{% ifnotequal key 'sorted' %}{{ key }}={{ value }}&{% endifnotequal %}{%endfor%}{% endif %}{%endfor%}sorted=expensive"
+                                       style="transform: translateX(0px);">گران ترین</a>
+                                </div>
+                            </div>
+                            <div class="ah-tab-content-wrapper dt-sl px-res-0">
+                                <div class="ah-tab-content dt-sl" data-ah-tab-active="true">
+                                    <div class="row mb-3 mx-0 px-res-0">
+
+                                        {% for product in object_list.object_list %}
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-12 px-10 mb-1 px-res-0">
+                                                <div class="product-card mb-2 mx-res-0">
+                                                    {% if product.amazing %}
+                                                        <div class="promotion-badge">
+                                                            فروش ویژه
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="product-head">
+                                                        <div class="rating-stars">
+                                                            {% for star in product.avg %}
+                                                                <i class="mdi mdi-star {{ star|yesno:'active,' }}"></i>
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% if product.amazing %}
+                                                            <div class="discount">
+                                                                <span>{{ product.amazing.discount }}%</span>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <a class="product-thumb" href="{% url 'products:detail_product' product.code product.slug %}" data-toggle="tooltip" data-placement="bottom" title="{{ product.title }}">
+                                                        <img src="{{ product.avatar }}" alt="Product Thumbnail">
+                                                    </a>
+                                                    <div class="product-card-body">
+                                                        <h5 class="product-meta mt-2">
+                                                            <a href="{% url 'products:detail_product' product.code product.slug %}">{{ product.title|truncatechars:45 }}</a>
+                                                        </h5>
+                                                        <span class="product-price">
+                                                            {% if product.status %}
+                                                                <span class="{% ifnotequal product.price product.get_nice_price %}text-danger{% endifnotequal %}" style="font-size: 14px;">
+                                                                    {{ product.get_nice_price }}
+                                                                    تومان
+                                                                </span>
+                                                                {% ifnotequal product.price product.get_nice_price %}
+                                                                    <strike class="text-black-50" style="font-size: 12px;">{{ product.price }} (ت)</strike>
+                                                                {% endifnotequal %}
+                                                            {% else %}
+                                                                ناموجود
+                                                            {% endif %}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            {% ifnotequal object_list.pages|length 1 %}
+                                                {% include 'app_site/shared/pagination/_GenericPagination.html' with page_obj=object_list %}
+                                            {% endifnotequal %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-lg-9 col-md-12 col-sm-12">
+                        <div class="dt-sl dt-sn pt-3 pb-5">
+                            <div class="alert alert-warning mr-2 ml-2 mt-1">
+                                جستجو
+                                {% if request.GET.q %}<< {{ request.GET.q }}>>{% endif %}
+                                با هیچ کالایی هم‌خوانی نداشت.
+                            </div>
+                            <div class="mr-3">
+                                تلاش کنید:
+                                <br>
+                                <br>
+                                - از عبارت‌های متداول‌تر استفاده کنید.
+                                <br>
+                                <br>
+                                - املای عبارت وارد شده را بررسی کنید.
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- End Content -->
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

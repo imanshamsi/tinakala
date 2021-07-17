@@ -1,0 +1,166 @@
+{% load static %}
+<footer class="main-footer dt-sl">
+    <div class="back-to-top">
+        <a href="#"><span class="icon"><i class="mdi mdi-chevron-up"></i></span> <span>بازگشت به
+                        بالا</span></a>
+    </div>
+    <div class="container main-container">
+        <div class="footer-services" style="direction: rtl">
+            <div class="row">
+                <div class="service-item col">
+                    <a href="#" target="_blank">
+                        <img src="{% static 'app_site/img/svg/delivery.svg' %}">
+                    </a>
+                    <p>تحویل اکسپرس</p>
+                </div>
+                <div class="service-item col">
+                    <a href="#" target="_blank">
+                        <img src="{% static 'app_site/img/svg/contact-us.svg' %}">
+                    </a>
+                    <p>پشتیبانی 24 ساعته</p>
+                </div>
+                <div class="service-item col">
+                    <a href="#" target="_blank">
+                        <img src="{% static 'app_site/img/svg/payment-terms.svg' %}">
+                    </a>
+                    <p>پرداخت درمحل</p>
+                </div>
+                <div class="service-item col">
+                    <a href="#" target="_blank">
+                        <img src="{% static 'app_site/img/svg/return-policy.svg' %}">
+                    </a>
+                    <p>۷ روز ضمانت بازگشت</p>
+                </div>
+                <div class="service-item col">
+                    <a href="#" target="_blank">
+                        <img src="{% static 'app_site/img/svg/origin-guarantee.svg' %}">
+                    </a>
+                    <p>ضمانت اصل بودن کالا</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-widgets" style="direction: rtl">
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="widget-menu widget card">
+                        <header class="card-header">
+                            <h3 class="card-title">راهنمای خرید از تیناکالا</h3>
+                        </header>
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="#">نحوه ثبت سفارش</a>
+                            </li>
+                            <li>
+                                <a href="#">رویه ارسال سفارش</a>
+                            </li>
+                            <li>
+                                <a href="#">شیوه‌های پرداخت</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="widget-menu widget card">
+                        <header class="card-header">
+                            <h3 class="card-title">خدمات مشتریان</h3>
+                        </header>
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="#">پاسخ به پرسش‌های متداول</a>
+                            </li>
+                            <li>
+                                <a href="#">رویه‌های بازگرداندن کالا</a>
+                            </li>
+                            <li>
+                                <a href="#">شرایط استفاده</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'info:site_privacy' %}">حریم خصوصی</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="widget-menu widget card">
+                        <header class="card-header">
+                            <h3 class="card-title">با تیناکالا</h3>
+                        </header>
+                        <ul class="footer-menu">
+                            <li>
+                                <a href="#">فروش در تیناکالا</a>
+                            </li>
+                            <li>
+                                <a href="#">همکاری با سازمان‌ها</a>
+                            </li>
+                            <li>
+                                <a href="#">فرصت‌های شغلی</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'contact:contact-us' %}">تماس با تیناکالا</a>
+                            </li>
+                            <li>
+                                <a href="#">درباره تیناکالا</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="newsletter">
+                        <p>از تخفیف‌ها و جدیدترین‌های فروشگاه باخبر شوید:</p>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            {{ newsletters_form.email }}
+                            <input type="submit" class="btn btn-primary" value="ارسال">
+                        </form>
+                        {% for message in messages %}
+                            <div class="alert alert-primary mt-2">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="socials">
+                        <p>ما را در شبکه های اجتماعی دنبال کنید.</p>
+                        <div class="footer-social">
+                            <ul class="text-center">
+                                <li><a href="{{ site_info.link_instagram }}"><i class="mdi mdi-instagram"></i></a></li>
+                                <li><a href="{{ site_info.link_telegram }}"><i class="mdi mdi-telegram"></i></a></li>
+                                <li><a href="{{ site_info.link_facebook }}"><i class="mdi mdi-facebook"></i></a></li>
+                                <li><a href="{{ site_info.link_twitter }}"><i class="mdi mdi-twitter"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <div class="row">
+                <div class="col-12 text-right">
+                    <span>تمام روزهای سال باشما هستیم</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="description">
+        <div class="container main-container">
+            <div class="row">
+                <div class="symbol col-12 col-lg-5 mb-3">
+                    <a href="{{ site_info.link_samandehi }}" target="_blank"><img src="{{ site_info.samandehi.url }}" alt=""></a>
+                    <a href="{{ site_info.link_electronic }}" target="_blank"><img src="{{ site_info.electronic.url }}" alt=""></a>
+                </div>
+                <div class="site-description col-12 col-lg-7">
+                    <h1 class="site-title">{{ site_info.title }}</h1>
+                    <p>
+                        {{ site_info.abstract }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <div class="container main-container">
+            <p>
+                {{ site_info.copyright_access }}
+            </p>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,57 @@
+{% load jalali_tags %}
+{% if orders %}
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2 px-res-1">
+                <h2>آخرین سفارش‌ها</h2>
+            </div>
+            <div class="dt-sl">
+                <div class="table-responsive">
+                    <table class="table table-order">
+                        <thead>
+                        <tr>
+                            <th>ردیف</th>
+                            <th>شماره سفارش</th>
+                            <th>تاریخ ثبت سفارش</th>
+                            <th>مبلغ کل</th>
+                            <th>عملیات پرداخت</th>
+                            <th>وضعیت سفارش</th>
+                            <th>جزییات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.detail.order_code|upper }}</td>
+                                <td>{{ order.detail.order_date|to_jalali:'%Y/%m/%d' }}</td>
+                                <td>{{ order.detail.get_nice_total_price }} تومان</td>
+                                <td><div class="badge badge-{{ order.detail.is_paid|yesno:'success,danger' }}">{{ order.detail.is_paid|yesno:'پرداخت شده,پرداخت نشده' }}</div></td>
+                                <td><div class="badge badge-{% if order.detail.transaction.status %}primary{% else %}secondary{% endif %}">
+                                    {% if order.detail.transaction.status %}
+                                    {% else %}
+                                        سفارش پرداخت نشده
+                                    {% endif %}
+                                </div></td>
+                                <td class="details-link">
+                                    <a href="{% url 'auth:user-invoice-detail' order.detail.order_code %}">
+                                        <i class="mdi mdi-chevron-left"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <td class="link-to-orders" colspan="7">
+                                <a href="{% url 'auth:user-invoice' %}">
+                                    مشاهده لیست سفارش ها
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

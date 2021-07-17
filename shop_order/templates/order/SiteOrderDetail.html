@@ -1,0 +1,106 @@
+{% extends 'accounts/shared/_AccountsMainLayout.html' %}
+{% block content %}
+    <main class="main-content dt-sl mt-4 mb-3">
+        <div class="container main-container">
+
+            <div class="row">
+                <div class="cart-page-content col-12 px-0">
+                    <div class="checkout-alert dt-sn mb-4">
+                        <div class="circle-box-icon successful">
+                            <i class="mdi mdi-check-bold"></i>
+                        </div>
+                        <div class="checkout-alert-title">
+                            <h4> سفارش <span class="checkout-alert-highlighted checkout-alert-highlighted-success">{{ order.order_code|upper }}</span>
+                                با موفقیت در سیستم ثبت شد.
+                            </h4>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 px-res-0">
+                                <div class="checkout-table">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                نام تحویل گیرنده:
+                                                <span>
+                                                            {{ order.address.fullname }}
+                                                        </span></p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                شماره تماس :
+                                                <span>
+                                                            {{ order.address.phone }}
+                                                        </span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                تعداد مرسوله :
+                                                <span>
+                                                            {{ products|length }}
+                                                        </span></p>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <p>
+                                                مبلغ کل:
+                                                <span>
+                                                            {{ total_price }} تومان
+                                                        </span></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <p>آدرس : استان {{ order.address.state }}
+                                                ، شهر {{ order.address.city }}، {{ order.address.address }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-12 px-0">
+                        <div class="table-responsive dt-sl">
+                            <table class="table table-cart">
+                                <tbody>
+                                {% for item in products %}
+
+                                    <tr class="checkout-item">
+                                        <td>
+                                            <img style="width: 100px;height: 100px" src="{{ item.product.avatar.url }}" alt="">
+                                        </td>
+                                        <td class="text-right">
+                                            <a href="{% url 'products:detail_product' item.product.code item.product.slug %}">
+                                                <h3 class="checkout-title">
+                                                    {{ item.product.title|truncatechars:45 }}
+                                                </h3>
+                                            </a>
+                                            <p class="checkout-dealer">
+                                                قیمت: {{ item.get_nice_price }} تومان
+                                            </p>
+                                        </td>
+                                        <td>
+                                            x {{ item.product_count }}
+                                        </td>
+                                        <td><strong>{{ item.get_nice_total_price }} تومان</strong></td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="col-xl-2 col-lg-2 col-2 px-0 float-left mt-3 mb-2 ml-2">
+                                <a href="{% url 'order:to-bank' order.order_code %}">
+                                    <button class="btn-primary-cm btn-with-icon w-100 text-center pr-0">
+                                        <i class="mdi mdi-credit-card"></i>
+                                        پرداخت سفارش
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

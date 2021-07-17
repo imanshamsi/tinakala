@@ -1,0 +1,23 @@
+<footer class="mini-footer dt-sl">
+    <div class="container main-container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="mini-footer-menu">
+                    <li><a href="{% url 'home-page' %}">صفحه اصلی</a></li>
+                    <li><a href="{% url 'info:site_privacy' %}">حریم خصوصی</a></li>
+                    <li><a href="{% url 'contact:contact-us' %}">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="col-12 mt-2 mb-3">
+                <div class="footer-light-text">
+                    {{ site_info.copyright_access }}
+                </div>
+            </div>
+            <div class="col-12 text-center">
+                <div class="copy-right-mini-footer">
+                    {{ site_info.copyright }}
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

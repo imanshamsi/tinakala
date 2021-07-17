@@ -1,0 +1,36 @@
+{% load static %}
+<div class="col-xl-6 col-lg-12">
+    <div class="px-3">
+        <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide dt-sl mb-2">
+            <h2>لیست آخرین علاقه‌مندی‌ها</h2>
+        </div>
+        <div class="profile-section dt-sl">
+            <ul class="list-favorites">
+                {% if favorites %}
+                    {% for favorite in favorites %}
+                        <li>
+                            <a href="{% url 'products:detail_product' favorite.code favorite.slug %}">
+                                <img src="{{ favorite.avatar.url }}" alt="">
+                                <span>{{ favorite.title|truncatechars:25 }}</span>
+                            </a>
+                            <button>
+                                <a href="{% url 'auth:user-favorite-delete' favorite.slug %}" class="text-white">
+                                    <i class="mdi mdi-trash-can-outline"></i>
+                                </a>
+
+                            </button>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning">شما محصول فعالی در این بخش ندارید.</div>
+                {% endif %}
+            </ul>
+            <div class="profile-section-link">
+                <a href="{% url 'auth:user-favorite' %}" class="border-bottom-dt">
+                    <i class="mdi mdi-square-edit-outline"></i>
+                    مشاهده و ویرایش لیست مورد علاقه
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

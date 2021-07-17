@@ -1,0 +1,10 @@
+<div class="dt-sn dt-sl mb-3">
+    <div class="section-title text-sm-title title-wide no-after-title-wide mb-1">
+        <h2>دسته ها</h2>
+    </div>
+    <ul class="category-list">
+        {% for category in categories %}
+            <li><a href="{% url 'blog:show-blogs-by-query' category.slug %}">{{ category.fa_title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

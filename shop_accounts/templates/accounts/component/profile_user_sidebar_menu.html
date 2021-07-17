@@ -1,0 +1,68 @@
+{% url 'auth:user-profile' as url_user_profile %}
+{% url 'auth:user-invoice' as url_user_invoice %}
+{% url 'auth:user-ticket' as url_user_ticket %}
+{% url 'auth:user-favorite' as url_user_favorite %}
+{% url 'auth:user-comment' as url_user_comment %}
+{% url 'auth:user-address' as url_user_address %}
+{% url 'auth:recent-visits' as url_user_recent_visits %}
+{% url 'auth:change-profile' as url_user_change_profile %}
+
+<div class="dt-sl dt-sn mb-3">
+    <div class="profile-menu-section dt-sl">
+        <div class="label-profile-menu mt-2 mb-2">
+            <span>حساب کاربری شما</span>
+        </div>
+        <div class="profile-menu">
+            <ul>
+                <li>
+                    <a href="{{ url_user_profile }}" {% if request.get_full_path == url_user_profile %}class="active"{% endif %}>
+                        <i class="mdi mdi-account-circle-outline"></i>
+                        پروفایل
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_invoice }}" {% if request.get_full_path == url_user_invoice %}class="active"{% endif %}>
+                        <i class="mdi mdi-basket"></i>
+                        همه سفارش ها
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_ticket }}" {% if request.get_full_path == url_user_ticket %}class="active"{% endif %}>
+                        <i class="mdi mdi-mailbox-open-outline"></i>
+                        تیکت ها
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_favorite }}" {% if request.get_full_path == url_user_favorite %}class="active"{% endif %}>
+                        <i class="mdi mdi-heart-outline"></i>
+                        لیست علاقمندی ها
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_comment }}" {% if request.get_full_path == url_user_comment %}class="active"{% endif %}>
+                        <i class="mdi mdi-glasses"></i>
+                         نظرات من
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_address }}" {% if request.get_full_path == url_user_address %}class="active"{% endif %}>
+                        <i class="mdi mdi-sign-direction"></i>
+                        آدرس ها
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_recent_visits }}" {% if request.get_full_path == url_user_recent_visits %}class="active"{% endif %}>
+                        <i class="mdi mdi-eye-outline"></i>
+                        بازدیدهای اخیر
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_user_change_profile }}" {% if request.get_full_path == url_user_change_profile %}class="active"{% endif %}>
+                        <i class="mdi mdi-account-edit-outline"></i>
+                        اطلاعات شخصی
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

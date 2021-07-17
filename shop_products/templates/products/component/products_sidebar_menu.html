@@ -1,0 +1,96 @@
+{% load static %}
+<div class="col-lg-3 col-md-12 col-sm-12" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+    <div class="theiaStickySidebar" style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;"><div class="dt-sn mb-3">
+        <form action="{{ request.get_full_path }}" method="get">
+            <div class="col-12">
+                <div class="section-title text-sm-title title-wide mb-1 no-after-title-wide">
+                    <h2>فیلتر محصولات</h2>
+                </div>
+            </div>
+
+            <div class="col-12 filter-product mb-3">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-right collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    دسته بندی
+                                    <i class="mdi mdi-chevron-down"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
+                            {% include 'products/component/side_bar_categories.html' with parent=parent child=child %}
+                        </div>
+                    </div>
+                    {% if form %}
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-block text-right collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        {{ form.brands.label }}
+                                        <i class="mdi mdi-chevron-down"></i>
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    {% for brand in form.brands %}
+                                        <div class="custom-control custom-checkbox">{{ brand }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-block text-right collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        فیلتر بر اساس قیمت
+                                        <i class="mdi mdi-chevron-down"></i>
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <div class="form-ui">
+                                        <div class="form-row-title">{{ form.price_start.label }}</div>
+                                        <div class="form-row">{{ form.price_start }}</div>
+                                        <div class="form-row-title">{{ form.price_end.label }}</div>
+                                        <div class="form-row">{{ form.price_end }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if form %}
+                <div class="col-12 mb-3">
+                    <div class="parent-switcher">
+                        <label class="ui-statusswitcher">
+                            {{ form.is_exist }}
+                            <span class="ui-statusswitcher-slider"><span class="ui-statusswitcher-slider-toggle"></span></span>
+                        </label>
+                        <label class="label-switcher" for="{{ form.is_exist.id_for_label }}">{{ form.is_exist.label }}</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-info btn-block" type="submit">
+                        فیلتر
+                    </button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+        <div class="resize-sensor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+            <div class="resize-sensor-expand" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 360px; height: 1259px;">
+                </div>
+            </div>
+            <div class="resize-sensor-shrink" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
